@@ -1,13 +1,14 @@
 'use client'
 
 import { BreedIdentification } from '@/src/lib/types'
+import { Key } from 'react'
 
 interface BreedCardProps {
   result: BreedIdentification
 }
 
 export function BreedCard({ result }: BreedCardProps) {
-  const { breed, confidence, isMixed, secondaryBreed, imageUrl, timestamp, info, allPredictions } = result
+  const { breedName: breed, confidence, isMixed, secondaryBreed, imageUrl, timestamp, details: info, allPredictions } = result as any
 
   const confColor =
     confidence >= 75 ? 'bg-green-500' :
@@ -34,9 +35,9 @@ export function BreedCard({ result }: BreedCardProps) {
         {/* Name + Confidence bar */}
         <div className="space-y-2">
           <div className="flex items-start justify-between gap-3">
-            <h2 className="text-3xl font-bold text-neutral-900">{breed}</h2>
+            <h2 className="text-3xl font-bold text-[#0c0a09]">{breed}</h2>
             {info?.origin && (
-              <span className="text-xs text-neutral-400 mt-2 flex-shrink-0">🌍 {info.origin}</span>
+              <span className="text-xs text-[#0c0a09] mt-2 flex-shrink-0">🌍 {info.origin}</span>
             )}
           </div>
 
@@ -53,7 +54,7 @@ export function BreedCard({ result }: BreedCardProps) {
                 style={{ width: `${confidence}%` }}
               />
             </div>
-            <span className="text-sm font-semibold text-neutral-700 flex-shrink-0">
+            <span className="text-sm font-semiboldtext-[#0c0a09] flex-shrink-0">
               {confidence.toFixed(1)}%
             </span>
           </div>
@@ -61,23 +62,23 @@ export function BreedCard({ result }: BreedCardProps) {
 
         {/* Description */}
         {info?.description && (
-          <p className="text-sm text-neutral-600 leading-relaxed">{info.description}</p>
+          <p className="text-sm text-[#0c0a09] leading-relaxed">{info.description}</p>
         )}
 
         {/* Details grid */}
         {info && (
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-orange-50 rounded-xl p-4">
-              <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Lifespan</p>
-              <p className="text-base font-bold text-neutral-900 mt-1">{info.averageLifespan}</p>
+              <p className="text-xs font-semibold text-[#0c0a09] uppercase tracking-wider">Lifespan</p>
+              <p className="text-base font-bold text-[#0c0a09] mt-1">{info.averageLifespan}</p>
             </div>
             <div className="bg-amber-50 rounded-xl p-4">
-              <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Weight</p>
-              <p className="text-base font-bold text-neutral-900 mt-1">{info.averageWeight}</p>
+              <p className="text-xs font-semibold text-[#0c0a09] uppercase tracking-wider">Weight</p>
+              <p className="text-base font-bold text-[#0c0a09] mt-1">{info.averageWeight}</p>
             </div>
             <div className="bg-rose-50 rounded-xl p-4 col-span-2">
-              <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Origin</p>
-              <p className="text-base font-bold text-neutral-900 mt-1">{info.origin}</p>
+              <p className="text-xs font-semibold text-[#0c0a09] uppercase tracking-wider">Origin</p>
+              <p className="text-base font-bold text-[#0c0a09] mt-1">{info.origin}</p>
             </div>
           </div>
         )}
@@ -85,16 +86,16 @@ export function BreedCard({ result }: BreedCardProps) {
         {/* Temperament */}
         {info?.temperament && (
           <div>
-            <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2">Temperament</p>
+            <p className="text-xs font-semibold text-[#0c0a09] uppercase tracking-wider mb-2">Temperament</p>
             <div className="flex flex-wrap gap-2">
-              {info.temperament.split(',').map((t) => (
+              {info.temperament.split(',').map((t: string) => (
                 <span key={t} className="px-3 py-1 bg-orange-100 text-orange-700 text-xs font-medium rounded-full">
                   {t.trim()}
                 </span>
               ))}
             </div>
             {info.temperamentDetail && (
-              <p className="text-sm text-neutral-600 leading-relaxed mt-2">{info.temperamentDetail}</p>
+              <p className="text-sm text-[#0c0a09] leading-relaxed mt-2">{info.temperamentDetail}</p>
             )}
           </div>
         )}
@@ -103,19 +104,19 @@ export function BreedCard({ result }: BreedCardProps) {
         {info?.funFact && (
           <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-xl">
             <p className="text-xs font-semibold text-blue-900 uppercase tracking-wider">Fun Fact</p>
-            <p className="text-sm text-neutral-700 mt-1 leading-relaxed">{info.funFact}</p>
+            <p className="text-sm text-[#0c0a09] mt-1 leading-relaxed">{info.funFact}</p>
           </div>
         )}
 
         {/* Health issues */}
         {illnesses.length > 0 && (
           <div>
-            <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-3">
+            <p className="text-xs font-semibold text-[#0c0a09] uppercase tracking-wider mb-3">
               Common Health Issues
             </p>
             <ul className="space-y-1.5">
-              {illnesses.map((illness, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-neutral-700">
+              {illnesses.map((illness:string, i:string) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-[#0c0a09]">
                   <span className="text-orange-500 font-bold mt-0.5">•</span>
                   <span>{illness}</span>
                 </li>
@@ -139,7 +140,7 @@ export function BreedCard({ result }: BreedCardProps) {
               Confidence Breakdown
             </p>
             <div className="space-y-2">
-              {allPredictions.slice(0, 5).map((p, i) => (
+              {allPredictions.slice(0, 5).map((p:{ breed: string; confidence: number }, i:number) => (
                 <div key={p.breed}>
                   <div className="flex justify-between text-xs text-neutral-500 mb-1">
                     <span>{p.breed}</span>

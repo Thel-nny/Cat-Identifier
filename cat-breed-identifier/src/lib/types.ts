@@ -1,7 +1,9 @@
 import { BreedDetail } from "./api";
 
+
 export interface BreedIdentification {
-  breed: string;
+  id: string;
+  breedName: string;
   confidence: number;
   secondaryBreed: string | null;
   secondaryConfidence: number | null;

@@ -43,7 +43,7 @@ export function ResultsSection({
     )
   }
 
-  const { breed, confidence, secondaryBreed, isMixed, info, allPredictions } = currentResult
+  const { breedName, confidence, secondaryBreed, isMixed, info, allPredictions } = currentResult
 
   const confColor =
     confidence >= 75
@@ -57,7 +57,7 @@ export function ResultsSection({
       {/* Result header */}
       <div className="flex items-start justify-between mb-1">
         <div>
-          <h2 className="text-2xl font-bold text-neutral-900">{breed}</h2>
+          <h2 className="text-2xl font-bold text-neutral-900">{breedName}</h2>
           {info && (
             <p className="text-xs text-neutral-400 mt-0.5">
               🌍 {info.origin} · {info.averageLifespan}
@@ -73,7 +73,7 @@ export function ResultsSection({
       {isMixed && secondaryBreed && (
         <div className="mt-2 mb-3 flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-xl px-3 py-2 text-xs text-amber-700">
           <span className="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0" />
-          Possible mixed breed — dominant <strong className="mx-1">{breed}</strong> with secondary traits of{' '}
+          Possible mixed breed — dominant <strong className="mx-1">{breedName}</strong> with secondary traits of{' '}
           <strong className="ml-1">{secondaryBreed}</strong>
         </div>
       )}
@@ -194,11 +194,11 @@ export function ResultsSection({
                   >
                     <img
                       src={h.imageUrl}
-                      alt={h.breed}
+                      alt={h.breedName}
                       className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
                     />
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-neutral-800 text-sm">{h.breed}</p>
+                      <p className="font-medium text-neutral-800 text-sm">{h.breedName}</p>
                       <p className="text-xs text-neutral-400">
                         {h.confidence.toFixed(1)}% · {new Date(h.timestamp).toLocaleTimeString()}
                       </p>
