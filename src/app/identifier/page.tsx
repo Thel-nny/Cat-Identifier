@@ -98,6 +98,43 @@ export default function IdentifierApp() {
                   isLoading={isLoading}
                 />
               </div>
+              {/* Sample images row */}
+              <div className="mt-6 bg-white/50 backdrop-blur rounded-2xl px-5 py-4 shadow-lg border border-amber-100">
+                <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wide mb-3">
+                  Try a sample — drag a photo onto the upload box
+                </p>
+                <div className="flex gap-3 overflow-x-auto pb-1">
+                  {[
+                    { file: 'Abyssinian.jpg',       label: 'Abyssinian' },
+                    { file: 'AmericanShorthair.jpg', label: 'American Shorthair' },
+                    { file: 'Birman.jpg',           label: 'Birman' },
+                    { file: 'BritishShorthair.jpg', label: 'British Shorthair' },
+                    { file: 'MaineCoon.jpg',        label: 'Maine Coon' },
+                    { file: 'Persian.jpg',          label: 'Persian' },
+                    { file: 'Ragdoll.jpg',          label: 'Ragdoll' },
+                    { file: 'RussianBlue.jpg',      label: 'Russian Blue' },
+                    { file: 'Siamese.jpg',          label: 'Siamese' },
+                    { file: 'Sphynx.jpg',           label: 'Sphynx' },
+                  ].map(({ file, label }) => (
+                    <div
+                      key={file}
+                      className="flex-shrink-0 group cursor-grab active:cursor-grabbing w-24"
+                      draggable
+                      onDragStart={(e) => {
+                        e.dataTransfer.setData('text/plain', `/sample-images/${file}`)
+                        e.dataTransfer.effectAllowed = 'copy'
+                      }}
+                    >
+                      <img
+                        src={`/sample-images/${file}`}
+                        alt={label}
+                        className="w-24 h-20 object-cover rounded-xl border border-neutral-200 group-hover:border-orange-300 group-hover:scale-105 transition-all duration-150 pointer-events-none"
+                      />
+                      <p className="text-[10px] text-center text-neutral-500 mt-1 truncate">{label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 

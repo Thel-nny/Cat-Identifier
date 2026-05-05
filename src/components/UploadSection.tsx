@@ -24,12 +24,30 @@ export function UploadSection({ onImageSelected, isLoading }: Props) {
     reader.readAsDataURL(file)
   }, [onImageSelected])
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    setDragging(false)
-    const file = e.dataTransfer.files[0]
-    if (file?.type.startsWith('image/')) handleFile(file)
-  }, [handleFile])
+  const handleDrop = useCallback(async (e: React.DragEvent) => {
+  e.preventDefault()
+  setDragging(false)
+
+  // Real file drop (from OS/file manager)
+  const file = e.dataTransfer.files[0]
+  if (file?.type.startsWith('image/')) {
+    handleFile(file)
+    return
+  }
+
+  // In-page image drag (from sample gallery)
+  const url = e.dataTransfer.getData('text/plain')
+  if (url) {
+    try {
+      const res = await fetch(url)
+      const blob = await res.blob()
+      const syntheticFile = new File([blob], url.split('/').pop() || 'sample.jpg', { type: blob.type })
+      handleFile(syntheticFile)
+    } catch (err) {
+      console.error('Failed to load sample image:', err)
+    }
+  }
+}, [handleFile])
 
   return (
     <div>
