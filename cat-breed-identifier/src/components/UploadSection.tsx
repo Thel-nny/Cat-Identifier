@@ -64,7 +64,7 @@ export function UploadSection({ onImageSelected, isLoading }: Props) {
         className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-neutral-300 text-neutral-600 hover:border-orange-300 hover:text-orange-600 transition-colors text-sm font-medium mb-4"
       >
         <Camera size={18} />
-        Take a Photo
+        Upload a Photo
       </button>
       <input ref={cameraRef} type="file" accept="image/*" capture="environment" className="hidden"
         onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f) }} />

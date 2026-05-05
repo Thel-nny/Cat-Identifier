@@ -59,6 +59,8 @@ The model can identify **15 cat breeds**:
 
 ## Setup & Installation
 
+---
+
 ### Prerequisites
 
 - Python 3.10+
@@ -69,13 +71,21 @@ The model can identify **15 cat breeds**:
 
 ### 1. Clone or download the project
 
-```bash
+``` bash
 cd cat-breed-identifier
 ```
 
 ---
 
 ### 2. Backend Setup
+
+
+open a terminal for the server
+
+``` bash
+cd backend
+
+```
 
 Install Python dependencies:
 
@@ -89,17 +99,14 @@ Start the backend server:
 uvicorn main:app --reload --port 8000
 ```
 
-Verify it is running by visiting:
-
-```
-http://localhost:8000/health
-```
-
-You should see a JSON response with `"status": "ok"` and the list of loaded classes.
-
----
-
 ### 3. Frontend Setup
+
+open another terminal for the frontend
+
+``` bash
+cd src
+
+```
 
 Install Node dependencies:
 
@@ -135,7 +142,7 @@ FastAPI receives image
        │
        ▼
 Cat Gate Check
-  ├─ Top confidence < 30%  → Reject (not a cat)
+  ├─ Top confidence < 40%  → Reject (not a cat)
   ├─ Prediction entropy too high → Reject (not a cat)
   └─ Passes → Continue
        │
@@ -160,7 +167,7 @@ The app uses two signals from the breed model itself to reject non-cat images �
 To adjust sensitivity, edit these values in `main.py`:
 
 ```python
-CAT_CONFIDENCE_THRESHOLD = 30.0   # lower = more lenient, higher = stricter
+CAT_CONFIDENCE_THRESHOLD = 40.0   # lower = more lenient, higher = stricter
 CAT_ENTROPY_THRESHOLD    = 2.3    # lower = stricter, higher = more lenient
 ```
 
@@ -185,79 +192,3 @@ The model was trained in two phases using `cat_breeds_improved.ipynb`:
 - Class weight balancing via `sklearn`
 - ModelCheckpoint saves the best weights automatically
 - Input resolution upgraded from 224×224 to 300×300
-
----
-
-## API Reference
-
-### `GET /health`
-
-Returns server and model status.
-
-```json
-{
-  "status": "ok",
-  "model_loaded": true,
-  "num_classes": 15,
-  "classes": ["Abyssinian", "Bengal", "..."]
-}
-```
-
----
-
-### `POST /predict`
-
-Accepts a multipart image file and returns breed predictions.
-
-**Request:**
-```
-Content-Type: multipart/form-data
-Body: file=<image>
-```
-
-**Success response (200):**
-```json
-{
-  "dominant_breed": "Maine Coon",
-  "dominant_confidence": 91.4,
-  "secondary_breed": null,
-  "secondary_confidence": null,
-  "is_mixed": false,
-  "all_predictions": [
-    { "breed": "Maine Coon",  "confidence": 91.4 },
-    { "breed": "Ragdoll",     "confidence": 5.2  },
-    { "breed": "Birman",      "confidence": 1.8  },
-    { "breed": "Persian",     "confidence": 0.9  },
-    { "breed": "Abyssinian",  "confidence": 0.7  }
-  ]
-}
-```
-
-**Not-a-cat response (422):**
-```json
-{
-  "detail": {
-    "error": "not_a_cat",
-    "message": "No cat detected. The model is only 4.2% confident..."
-  }
-}
-```
-
-`is_mixed` is `true` when `dominant_confidence` is below 75%, triggering a secondary breed suggestion.
-
----
-
-## Troubleshooting
-
-| Problem | Fix |
-|---|---|
-| `uvicorn: command not found` | Run `pip install uvicorn` |
-| Model not found error on startup | Make sure `pet_identifier_model_2.keras` is in the same folder as `main.py` |
-| CORS error in browser | Make sure backend is running on port 8000 and frontend on 3000 or 5173 |
-| Real cats being rejected | Lower `CAT_CONFIDENCE_THRESHOLD` in `main.py` (e.g. to `20.0`) |
-| Humans still passing the gate | Raise `CAT_CONFIDENCE_THRESHOLD` in `main.py` (e.g. to `50.0`) |
-| Frontend shows blank page | Run `npm install` then `npm run dev` |
-
----
-
-## Acknowledgements
