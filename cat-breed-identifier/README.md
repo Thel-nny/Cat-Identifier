@@ -90,7 +90,7 @@ cd backend
 Install Python dependencies:
 
 ```bash
-pip install fastapi uvicorn tensorflow pillow python-multipart numpy
+venv/Scripts/activate pip install fastapi uvicorn tensorflow pillow numpy
 ```
 
 Start the backend server:
